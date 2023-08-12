@@ -1,4 +1,4 @@
-package com.example.luggagesystemnotificationapi.model
+package com.example.luggagesystemnotificationapi.domain.model
 
 import java.util.UUID
 

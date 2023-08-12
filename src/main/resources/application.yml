@@ -1,1 +1,23 @@
+spring:
+  kafka:
+    bootstrap-servers: http://localhost:29092
+    consumer:
+      auto-offset-reset: earliest
+      group-id: kafka-consumer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  application:
+    name: "notification-service"
+  data:
+    mongodb:
+      database: notifyDb
+      port: 27017
+      host: localhost
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8671/eureka/
 
+server:
+  port: 8084
