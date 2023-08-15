@@ -20,6 +20,7 @@ repositories {
 }
 
 dependencies {
+    implementation("com.resend.api:sdk:1.5.3")
     // https://mvnrepository.com/artifact/org.mapstruct/mapstruct
     implementation("org.mapstruct:mapstruct:1.5.3.Final")
     implementation ("org.springframework.boot:spring-boot-starter-mail")
