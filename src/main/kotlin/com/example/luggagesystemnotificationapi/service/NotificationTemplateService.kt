@@ -1,5 +1,6 @@
 package com.example.luggagesystemnotificationapi.service
 
+import com.example.luggagesystemnotificationapi.MailService.MailService
 import com.example.luggagesystemnotificationapi.domain.event.NotificationEvent
 
 import com.example.luggagesystemnotificationapi.domain.model.NotificationTemplate
@@ -16,12 +17,12 @@ import org.springframework.stereotype.Service
 @Service
 class NotificationTemplateService(
     private val notificationTemplateRepository: NotificationTemplateRepository,
-    private val notificationEventProducer: NotificationEventProducer
+    private val notificationEventProducer: NotificationEventProducer,
+    private val mailService: MailService
 ) {
     suspend fun createNotification(notificationTemplate: NotificationTemplate): NotificationTemplate {
-        val notificationEvent = NotificationEvent(notificationTemplate.info, "merhaba")
-        notificationEventProducer.send(notificationEvent)
-        sendMail()  //send mail
+        val nameOfUser = notificationTemplate.info
+        mailService.sendWelcomeMail(nameOfUser)
         return notificationTemplateRepository.save(notificationTemplate)
     }
 
@@ -35,25 +36,24 @@ class NotificationTemplateService(
         println("$data is sending ... wait ")
 
     }
+    /*
+        private suspend fun sendMail(): SendEmailResponse {
 
-    private suspend fun sendMail(): SendEmailResponse {
-
-        val resendBuilder = Resend.builder()
-        resendBuilder.setSecurity(Security().withBearerAuth("Bearer re_NA9aRFw5_BrRMu9cfzpUBZfRsd67NnUEq"))
-        val resend = resendBuilder.build()
-        val sendEmailRequest = SendEmailRequest().apply {
-            request = Email().apply {
-
-                from = "onboarding@resend.dev"
-                html = ""
-                subject = "hello world"
-                text = "secondemail"
-                to = "190706015@st.maltepe.edu.tr"
+            val resendBuilder = Resend.builder()
+            resendBuilder.setSecurity(Security().withBearerAuth("Bearer re_NA9aRFw5_BrRMu9cfzpUBZfRsd67NnUEq"))
+            val resend = resendBuilder.build()
+            val sendEmailRequest = SendEmailRequest().apply {
+                request = Email().apply {
+                    from = "onboarding@resend.dev"
+                    html = ""
+                    subject = "hello world"
+                    text = "secondemail"
+                    to = "190706015@st.maltepe.edu.tr"
+                }
             }
-        }
-        return resend.email.sendEmail(sendEmailRequest)
+            return resend.email.sendEmail(sendEmailRequest)
 
-    }
+        }*/
 
     suspend fun getNotificationById(id: String): NotificationTemplate? {
         return notificationTemplateRepository.findById(id)?.let {
